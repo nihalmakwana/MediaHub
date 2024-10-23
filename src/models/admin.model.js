@@ -4,10 +4,6 @@ import jwt from 'jsonwebtoken'
 
 const adminSchema = new Schema(
     {
-        name: {
-            type: String,
-            required: true
-        },
         email: {
             type: String,
             required: true
@@ -15,6 +11,9 @@ const adminSchema = new Schema(
         password: {
             type: String,
             required: true
+        },
+        refreshToken: {
+            type: String
         }
     },
     { timestamps: true }
@@ -30,7 +29,7 @@ adminSchema.pre("save", async function(next) {
 
 // Method to check encrypted password 
 adminSchema.methods.isPasswordCorrect = async function(password) {
-    return await bcrypt.compare(password, this.password)
+    return await password === this.password
 }
 
 // Method to generate access token
@@ -38,8 +37,7 @@ adminSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
             _id: this._id,
-            email: this.email,
-            name: this.name
+            email: this.email
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
