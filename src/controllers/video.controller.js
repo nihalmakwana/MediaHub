@@ -22,7 +22,7 @@ const uploadVideo = asyncHandler ( async (req, res) => {
         return res
         .status(200)
         .json(
-            new ApiResponse(200, {}, "Video Uploaded Successfully!!!")
+            new ApiResponse(200, video, "Video Uploaded Successfully!!!")
         )
     } catch (error) {
         throw new ApiError(500, error?.message || "Something went wrong while creating video")
@@ -31,7 +31,7 @@ const uploadVideo = asyncHandler ( async (req, res) => {
 
 const getAllVideos = asyncHandler( async (req, res) => {
     try {
-        const videos = await Video.find()
+        const videos = await Video.find().populate('userId', 'name avatar')
         return res
         .status(200)
         .json(

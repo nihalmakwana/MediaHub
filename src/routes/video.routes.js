@@ -8,6 +8,6 @@ import { verifyUserJWT } from "../middlewares/auth.middleware.js";
 const router = Router()
 
 router.route("/upload-video").post(verifyUserJWT, uploadVideo)
-router.route("/get-all-videos").get(verifyUserJWT, getAllVideos)
+router.route("/get-all-videos").get(getAllVideos)
 
 export default router
