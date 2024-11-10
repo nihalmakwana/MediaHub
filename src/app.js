@@ -19,11 +19,13 @@ import userRouter from "./routes/user.routes.js"
 import adminRouter from "./routes/admin.routes.js"
 import videoRouter from "./routes/video.routes.js"
 import musicRouter from "./routes/music.routes.js"
+import commentRouter from "./routes/comment.routes.js"
 
 // Routes Declaration
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/video", videoRouter)
 app.use("/api/v1/music", musicRouter)
+app.use("/api/v1/comment", commentRouter)
 
 export { app }
