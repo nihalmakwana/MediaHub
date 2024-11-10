@@ -42,7 +42,24 @@ const getAllVideos = asyncHandler( async (req, res) => {
     }
 })
 
+const getVideoDetails = asyncHandler( async (req, res) => {
+    try {
+        const { id } = req.params 
+
+        const video = await Video.findById(id)
+
+        return res 
+        .status(200)
+        .json(
+            new ApiResponse(200, video, "Video Fetch Successfully!!")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while fetching video details")
+    }
+})
+
 export {
     uploadVideo,
-    getAllVideos
+    getAllVideos,
+    getVideoDetails
 }

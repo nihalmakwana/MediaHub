@@ -48,7 +48,24 @@ const getAllMusic = asyncHandler( async (req, res) => {
     }
 })
 
+const getMusicDetails = asyncHandler( async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const music = await Music.findById(id)
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, music, "Music Fetched Successfully!!")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while fetching music details")
+    }
+})
+
 export {
     uploadMusic,
-    getAllMusic
+    getAllMusic,
+    getMusicDetails
 }
