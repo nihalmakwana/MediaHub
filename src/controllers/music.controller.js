@@ -52,7 +52,7 @@ const getMusicDetails = asyncHandler( async (req, res) => {
     try {
         const { id } = req.params
 
-        const music = await Music.findById(id)
+        const music = await Music.findById(id).populate("userId", "name avatar")
 
         return res
         .status(200)

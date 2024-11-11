@@ -46,7 +46,7 @@ const getVideoDetails = asyncHandler( async (req, res) => {
     try {
         const { id } = req.params 
 
-        const video = await Video.findById(id)
+        const video = await Video.findById(id).populate("userId", "name avatar")
 
         return res 
         .status(200)
