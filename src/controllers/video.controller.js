@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Video } from "../models/video.model.js";
+import { User } from "../models/user.model.js";
 
 const uploadVideo = asyncHandler ( async (req, res) => {
     try {
@@ -58,8 +59,108 @@ const getVideoDetails = asyncHandler( async (req, res) => {
     }
 })
 
+const like = asyncHandler( async (req, res) => {
+    const { videoId } = req.params
+    const userId = req.user._id
+    
+    try {
+        const video = await Video.findById(videoId)
+        if (!video) {
+            throw new ApiError(404, "Video Not Found")
+        }
+
+        if (!video.likes.includes(userId)) {
+            video.likes.push(userId)
+            video.dislikes = video.dislikes.filter( id => id.toString() !== userId.toString())
+
+            await User.findByIdAndUpdate(userId, { $addToSet: { likedVideo: videoId }})
+        } else {
+            video.likes = video.likes.filter(id => id.toString() !== userId.toString())
+            await User.findByIdAndUpdate(userId, { $pull: { likedVideo: videoId }})
+        }
+
+        await video.save()
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, video, "Video liked/disliked successfully")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while liked and disliked video")
+    }
+})
+
+const dislike = asyncHandler( async (req, res) => {
+    const { videoId } = req.params
+    const userId = req.user._id
+
+    try {
+        const video = await Video.findById(videoId)
+        if (!video) {
+            throw new ApiError(404, "Video not Found")
+        }
+
+        if (!video.dislikes.includes(userId)) {
+            video.dislikes.push(userId)
+            video.likes = video.likes.filter(id => id.toString() !== userId.toString())
+
+            await User.findByIdAndUpdate(userId, { $addToSet: { dislikedVideo: videoId }})
+        } else {
+            video.dislikes = video.dislikes.filter(id => id.toString() !== userId.toString())
+            await User.findByIdAndUpdate(userId, { $pull: { dislikedVideo: videoId }})
+        }
+
+        await video.save()
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, video, "Video liked/disliked successfully..")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while liked and disliked video")
+    }
+})
+
+const getLikedVideo = asyncHandler( async (req, res) => {
+    const userId = req.user._id
+
+    try {
+        const likedVideo = await Video.find({ likes: userId }).populate("userId", "name avatar").exec()
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, likedVideo, "All liked video fetched successfully")
+        )
+    } catch (error) {
+       throw new ApiError(500, error?.message || "Something went wrong while getting liked video") 
+    }
+})
+
+const getdisikedVideo = asyncHandler( async (req, res) => {
+    const userId = req.user._id
+
+    try {
+        const dislikedVideo = await Video.find({ dislikes: userId }).populate("userId", "name avatar").exec()
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, dislikedVideo, "All disliked video fetched successfully")
+        )
+    } catch (error) {
+       throw new ApiError(500, error?.message || "Something went wrong while getting disliked video") 
+    }
+})
+
 export {
     uploadVideo,
     getAllVideos,
-    getVideoDetails
+    getVideoDetails,
+    like,
+    dislike,
+    getLikedVideo,
+    getdisikedVideo
 }

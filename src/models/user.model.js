@@ -23,6 +23,26 @@ const userSchema = new Schema(
         },
         refreshToken: {
             type: String
+        },
+        likedVideo: {
+            type: [Schema.Types.ObjectId],
+            ref: "Video",
+            default: []
+        },
+        dislikedVideo: {
+            type: [Schema.Types.ObjectId],
+            ref: "Video",
+            default: []
+        },
+        likedMusic: {
+            type: [Schema.Types.ObjectId],
+            ref: "Music",
+            default: []
+        },
+        dislikedMusic: {
+            type: [Schema.Types.ObjectId],
+            ref: "Music",
+            default: []
         }
     },
     { timestamps: true }

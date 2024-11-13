@@ -28,11 +28,13 @@ const musicSchema = new Schema(
             required: true
         },
         likes: {
-            type: [String],
+            type: [Schema.Types.ObjectId],
+            ref: "User",
             default: []
         },
         dislikes: {
-            type: [String],
+            type: [Schema.Types.ObjectId],
+            ref: "User",
             default: []
         }
     },
