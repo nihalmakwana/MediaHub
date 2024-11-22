@@ -155,6 +155,22 @@ const getdisikedVideo = asyncHandler( async (req, res) => {
     }
 })
 
+const getUserVideo = asyncHandler( async (req, res) => {
+    const userId = req.user._id
+
+    try {
+        const videos = await Video.find({ userId })
+
+        return res 
+        .status(200)
+        .json(
+            new ApiResponse(200, videos, "Get user's all video successfully...")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while getting user's videos")
+    }
+})
+
 export {
     uploadVideo,
     getAllVideos,
@@ -162,5 +178,6 @@ export {
     like,
     dislike,
     getLikedVideo,
-    getdisikedVideo
+    getdisikedVideo,
+    getUserVideo
 }

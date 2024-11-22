@@ -6,6 +6,7 @@ import {
     getDislikedMusic,
     getLikedMusic,
     getMusicDetails,
+    getUserMusic,
     like,
     uploadMusic 
 } from "../controllers/music.controller.js";
@@ -19,5 +20,6 @@ router.route("/like/:musicId").patch(verifyUserJWT, like)
 router.route("/dislike/:musicId").patch(verifyUserJWT, dislike)
 router.route("/get-liked-music").get(verifyUserJWT, getLikedMusic)
 router.route("/get-disliked-music").get(verifyUserJWT, getDislikedMusic)
+router.route("/get-user-music").get(verifyUserJWT, getUserMusic)
 
 export default router

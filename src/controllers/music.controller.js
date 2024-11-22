@@ -162,6 +162,22 @@ const getDislikedMusic = asyncHandler( async (req, res) => {
     }
 })
 
+const getUserMusic = asyncHandler( async (req, res) => {
+    const userId = req.user._id
+
+    try {
+        const musics = await Music.find({ userId })
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, musics, "Get user's all music successfully...")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while getting user's music..")
+    }
+})
+
 export {
     uploadMusic,
     getAllMusic,
@@ -169,5 +185,6 @@ export {
     like,
     dislike,
     getLikedMusic,
-    getDislikedMusic
+    getDislikedMusic,
+    getUserMusic
 }

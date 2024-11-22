@@ -4,6 +4,7 @@ import {
     getAllVideos,
     getdisikedVideo,
     getLikedVideo,
+    getUserVideo,
     getVideoDetails,
     like,
     uploadVideo 
@@ -19,5 +20,6 @@ router.route("/like/:videoId").patch(verifyUserJWT, like)
 router.route("/dislike/:videoId").patch(verifyUserJWT, dislike)
 router.route("/get-liked-video").get(verifyUserJWT, getLikedVideo)
 router.route("/get-disliked-video").get(verifyUserJWT, getdisikedVideo)
+router.route("/get-user-video").get(verifyUserJWT, getUserVideo)
 
 export default router
