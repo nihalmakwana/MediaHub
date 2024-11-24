@@ -178,6 +178,26 @@ const getUserMusic = asyncHandler( async (req, res) => {
     }
 })
 
+const deleteMusic = asyncHandler( async (req, res) => {
+    const { musicId } = req.params 
+
+    try {
+        const deletedMusic = await Music.findByIdAndDelete(musicId)
+        if (!deletedMusic) {
+            throw new ApiError(404, "Music not found")
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, {}, "Music Deleted Successfully!!")
+        )
+
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while deleting music")
+    }
+})
+
 export {
     uploadMusic,
     getAllMusic,
@@ -186,5 +206,6 @@ export {
     dislike,
     getLikedMusic,
     getDislikedMusic,
-    getUserMusic
+    getUserMusic,
+    deleteMusic
 }

@@ -171,6 +171,24 @@ const getUserVideo = asyncHandler( async (req, res) => {
     }
 })
 
+const deleteVideo = asyncHandler( async (req, res) => {
+    try {
+        const { videoId } = req.params
+        const deletedVideo = await Video.findByIdAndDelete(videoId)
+        if (!deletedVideo) {
+            throw new ApiError(404, "Video Not Found")
+        } 
+
+        return res
+        .status(200)
+        ,json(
+            new ApiResponse(200, {}, "Video Deleted Successfully!!")
+        )
+    } catch (error) {
+      throw new ApiError(500, error?.message || "Something went wrong while deleting music")  
+    }
+})
+
 export {
     uploadVideo,
     getAllVideos,
@@ -179,5 +197,6 @@ export {
     dislike,
     getLikedVideo,
     getdisikedVideo,
-    getUserVideo
+    getUserVideo,
+    deleteVideo
 }

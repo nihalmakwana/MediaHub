@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyUserJWT } from "../middlewares/auth.middleware.js";
 import { 
+    deleteMusic,
     dislike,
     getAllMusic,
     getDislikedMusic,
@@ -21,5 +22,6 @@ router.route("/dislike/:musicId").patch(verifyUserJWT, dislike)
 router.route("/get-liked-music").get(verifyUserJWT, getLikedMusic)
 router.route("/get-disliked-music").get(verifyUserJWT, getDislikedMusic)
 router.route("/get-user-music").get(verifyUserJWT, getUserMusic)
+router.route("/delete-music/:musicId").delete(verifyUserJWT, deleteMusic)
 
 export default router
