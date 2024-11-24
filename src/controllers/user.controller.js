@@ -3,6 +3,8 @@ import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
+import { Video } from "../models/video.model.js"
+import { Music } from "../models/music.model.js"
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
@@ -126,8 +128,26 @@ const logoutUser = asyncHandler( async (req, res) => {
     )
 })
 
+const searchMedia = asyncHandler( async (req, res) => {
+    const { query } = req.query
+
+    try {
+        const videos = await Video.find({ title: new RegExp(query, 'i') })
+        const musics = await Music.find({ songName: new RegExp(query, 'i') })
+
+        return res 
+        .status(200)
+        .json(
+            new ApiResponse(200, {videos, musics}, "All results fetched successfully")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while searching results")
+    }
+})
+
 export {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    searchMedia
 }
