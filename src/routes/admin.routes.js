@@ -3,6 +3,7 @@ import {
     adminLogin, 
     adminLogout,
     deleteMedia,
+    deleteUser,
     getAllUsers,
     getUserDetails
 } from "../controllers/admin.controller.js";
@@ -17,5 +18,6 @@ router.route("/admin-logout").post(verifyAdminJWT, adminLogout)
 router.route("/get-all-users").get(verifyAdminJWT, getAllUsers)
 router.route("/get-users-details/:id").get(verifyAdminJWT, getUserDetails)
 router.route("/media/:id").delete(verifyAdminJWT, deleteMedia)
+router.route("/delete-user/:id").delete(verifyAdminJWT, deleteUser)
 
 export default router

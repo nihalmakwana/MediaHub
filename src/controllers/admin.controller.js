@@ -176,10 +176,27 @@ const deleteMedia = asyncHandler( async (req, res) => {
     }
 })
 
+const deleteUser = asyncHandler(async (req, res) => {
+    try {
+        const { id } = req.params
+
+        await User.findByIdAndDelete(id)
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, {}, "User Deleted Successfully!!!")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while deleting user")
+    }
+})
+
 export {
     adminLogin,
     adminLogout,
     getAllUsers,
     getUserDetails,
-    deleteMedia
+    deleteMedia,
+    deleteUser
 }
