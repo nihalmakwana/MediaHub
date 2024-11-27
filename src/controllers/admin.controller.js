@@ -5,7 +5,7 @@ import { Admin } from "../models/admin.model.js"
 import { User } from "../models/user.model.js"
 import { Video } from "../models/video.model.js"
 import { Music } from "../models/music.model.js"
-
+ 
 const generateAccessAndRefreshToken = async (adminId) => {
     try {
         const admin = await Admin.findById(adminId)
