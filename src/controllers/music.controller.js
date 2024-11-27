@@ -7,9 +7,9 @@ import { Video } from "../models/video.model.js";
 
 const uploadMusic = asyncHandler( async (req, res) => {
     try {
-        const { userId, singerName, songName, description, imageUrl, audioUrl } = req.body
+        const { userId, singerName, songName, description, imageUrl, songFileUrl } = req.body
     
-        if (!userId || !singerName || !songName || !description || !imageUrl || !audioUrl) {
+        if (!userId || !singerName || !songName || !description || !imageUrl || !songFileUrl) {
             throw new ApiError(401, "All fields are required")
         }
 
@@ -19,7 +19,7 @@ const uploadMusic = asyncHandler( async (req, res) => {
             songName,
             desc: description,
             image: imageUrl,
-            audio: audioUrl
+            songFile: songFileUrl
         })
 
         if (!newMusic) {

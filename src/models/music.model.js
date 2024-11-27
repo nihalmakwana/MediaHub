@@ -23,7 +23,7 @@ const musicSchema = new Schema(
             type: String,
             required: true
         },
-        audio: {
+        songFile: {
             type: String,
             required: true
         },
