@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { Video } from "../models/video.model.js"
 import { Music } from "../models/music.model.js"
+import axios from 'axios'
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try {
@@ -145,9 +146,31 @@ const searchMedia = asyncHandler( async (req, res) => {
     }
 })
 
+const getNews = asyncHandler( async (req, res) => {
+    const { category } = req.query
+
+    try {
+        const response = await axios.get('https://newsapi.org/v2/top-headlines', {
+            params: {
+                category: category || 'general',
+                apiKey: process.env.NEWS_API_KEY
+            },
+        })
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, response.data, "News Fetched successfully!!!")
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Failed to get news")
+    }
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
-    searchMedia
+    searchMedia,
+    getNews
 }
